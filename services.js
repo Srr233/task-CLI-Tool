@@ -61,19 +61,19 @@ const doCaesarCipher = async (options) => {
       const l = letter.charCodeAt();
       if (l >= C_UPPER_S && l <= C_UPPER_E) {
         const shifted = l + (shift % 26);
-        const newPos = shifted === C_UPPER_S ? shifted
+        const newPos = shifted === (C_UPPER_S + 1) ? shifted
           : shifted < C_UPPER_S ? C_UPPER_E - (C_UPPER_S - shifted)
             : shifted === C_UPPER_E ? shifted
               : shifted > C_UPPER_E ? C_UPPER_S + (shifted - C_UPPER_E)
-                : shifted;
+                : shifted === 64 ? C_UPPER_E : shifted;
         result += String.fromCharCode(newPos);
       } else if (l >= C_LOWER_S && l <= C_LOWER_E) {
         const shifted = l + (shift % 26);
-        const newPos = shifted === C_LOWER_S ? shifted
+        const newPos = shifted === (C_LOWER_S + 1) ? shifted
           : shifted < C_LOWER_S ? C_LOWER_E - (C_LOWER_S - shifted)
             : shifted === C_LOWER_E ? shifted
               : shifted > C_LOWER_E ? C_LOWER_S + (shifted - C_LOWER_E)
-                : shifted;
+                : shifted === 96 ? C_LOWER_E : shifted;
         result += String.fromCharCode(newPos);
       } else {
         result += letter;
