@@ -60,7 +60,7 @@ const doCaesarCipher = async (options) => {
     for (const letter of text) {
       const l = letter.charCodeAt();
       if (l >= C_UPPER_S && l <= C_UPPER_E) {
-        const shifted = l + +shift;
+        const shifted = l + (shift % 25);
         const newPos = shifted === C_UPPER_S ? shifted
           : shifted < C_UPPER_S ? C_UPPER_E - (C_UPPER_S - shifted)
             : shifted === C_UPPER_E ? shifted
@@ -68,7 +68,7 @@ const doCaesarCipher = async (options) => {
                 : shifted;
         result += String.fromCharCode(newPos);
       } else if (l >= C_LOWER_S && l <= C_LOWER_E) {
-        const shifted = l + +shift;
+        const shifted = l + (shift % 25);
         const newPos = shifted === C_LOWER_S ? shifted
           : shifted < C_LOWER_S ? C_LOWER_E - (C_LOWER_S - shifted)
             : shifted === C_LOWER_E ? shifted
@@ -85,11 +85,11 @@ const doCaesarCipher = async (options) => {
   switch(options.action) {
     case 'encode':
       newText = doCode(infoOfInput, options.shift);
-      console.log(newText);
+      writeFile(output, newText);
       break;
     case 'decode':
-      newText = doCode(infoOfInput, options.shift - options.shift * 2);
-      console.log(newText);
+      newText = doCode(infoOfInput, options.shift * -1);
+      writeFile(output, newText);
       break;
   }
 }
