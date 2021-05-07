@@ -52,9 +52,9 @@ const doCaesarCipher = async (options) => {
   const infoOfInput = await readFile(input);
 
   const doCode = (text, shift) => {
-    const C_LOWER_S = 97;
+    const C_LOWER_S = 96;
     const C_LOWER_E = 122;
-    const C_UPPER_S = 65;
+    const C_UPPER_S = 64;
     const C_UPPER_E = 90;
     let result = '';
     for (const letter of text) {
