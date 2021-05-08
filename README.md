@@ -56,3 +56,5 @@ $ node index.js --action encode --shift -1
 In that case program gives you allow using the terminal and seeing result at the meantime!
 ***
 Have fun!
+
+Made from Srr233 (Sergey)
