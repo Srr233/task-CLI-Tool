@@ -8,7 +8,7 @@ const readStdin = (shift, out) => {
     let chunk = process.stdin.read();
     if (chunk !== null) {
       if (!out) {
-        console.log(doCode(chunk, shift));
+        process.stdout.write(doCode(chunk, shift));
         readStdin(shift, out);
       } else {
         await fs.appendFile(out, `--- ${doCode(chunk, shift)}\n`);
