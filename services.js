@@ -5,17 +5,17 @@ const readFile = async (path) => {
     const data = await fs.readFile(path);
     return data.toString();
   } catch (e) {
-    await fs.appendFile('./stderr.txt', `\n-----${new Date()}: Can't read file\nCurrent error:\n${e}`);
-    throw new Error('Ops! Try to find out this error in the stderr.txt!');
+    await fs.appendFile('./stderr.txt', `\n-----${new Date()}: Can't read file\n     Current error:\n     ${e}`);
+    process.exit(1);
   }
 }
 const writeFile = async (path, text) => {
   try {
-    await fs.writeFile(path, text);
+    await fs.appendFile(path, `--- ${text}\n`);
     return true;
   } catch (e) {
-    await fs.appendFile('./stderr.txt', `\n-----${new Date()}: Can't write file\nCurrent error:\n${e}`);
-    throw new Error('Ops! Try to find out this error in the stderr.txt!');
+    await fs.appendFile('./stderr.txt', `\n-----${new Date()}: Can't write file\n     Current error:\n     ${e}`);
+    process.exit(1);
   }
 }
 
@@ -33,12 +33,22 @@ const areCorrectValues = (options) => {
       case 'action':
         res = options[item] == 'encode'
           || options[item] == 'decode';
-        if (!res) throw new Error('action should be encode or decode');
+        if (!res) {
+          (async () => {
+            await fs.appendFile('./stderr.txt', `\n-----${new Date()}: --action should be action or decode!`);
+            process.exit(1);
+          })();
+        }
         return res;
 
       case 'shift': 
         res = !isNaN(+options[item]);
-        if (!res) throw new Error('shift should be a number');
+        if (!res) {
+          (async () => {
+            await fs.appendFile('./stderr.txt', `\n-----${new Date()}: --shift should be a number!`);
+            process.exit(1);
+          })();
+        }
         return res;
     }
   });
