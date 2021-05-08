@@ -1,4 +1,0 @@
-
------Sat May 08 2021 09:45:21 GMT+0300 (GMT+03:00): Can't read file
-     Current error:
-     Error: ENOENT: no such file or directory, open 'E:\Programm\nodeJS\task1\index.txt'

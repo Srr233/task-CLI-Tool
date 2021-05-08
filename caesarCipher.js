@@ -1,5 +1,5 @@
-const { isAllOptionExists, areCorrectValues, doCaesarCipher } = require('./services');
-
+const doCaesarCipher = require('./doCaesarCipher');
+const { isAllOptionExists, areCorrectValues } = require('./checkers');
 process.on('exit', (code) => {
   return console.log(`Process exit with code: ${code}`);
 });
