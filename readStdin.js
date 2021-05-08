@@ -1,23 +1,42 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 const doCode = require('./doCode');
+const { Transform, pipeline } = require('stream');
 
 const readStdin = (shift, out) => {
   process.stdin.setEncoding('utf8');
 
-  process.stdin.on('readable', async () => {
-    let chunk = process.stdin.read();
-    if (chunk !== null) {
-      if (!out) {
-        process.stdout.write(doCode(chunk, shift));
-        readStdin(shift, out);
-      } else {
-        await fs.appendFile(out, `--- ${doCode(chunk, shift)}\n`);
-        readStdin(shift, out);
+  const ts = new Transform({
+    transform(chunk, _, cb) {
+      if(chunk !== null) {
+        cb(null, doCode(chunk.toString(), shift))
       }
     }
   });
 
-  process.stdin._read();
+  if (!out) {
+    pipeline(
+      process.stdin,
+      ts,
+      process.stdout,
+      (err) => {
+        if (err) {
+          process.stderr.write('error')
+        }
+      }
+    );
+  } else {
+    const readble = fs.createWriteStream(out);
+    pipeline(
+      process.stdin,
+      ts,
+      readble,
+      (err) => {
+        if (err) {
+          process.stderr.write('error')
+        }
+      }
+    );
+  }
 }
 
 module.exports = readStdin;
